@@ -63,14 +63,14 @@ def start_end_times(timeframe_str):
     if timeframe_str == 'minute':
         time_start = time_end - 60
     elif timeframe_str == 'hour':
-        time_start = time_end - 60*60
+        time_start = time_end - 60**2
     elif timeframe_str == 'day':
         time_start = time_end - 24*60*60
     elif timeframe_str == 'week':
         time_start = time_end - 24*60*60*7
     elif timeframe_str == 'month':
         time_start = time_end - 24*60*60*31
-    elif timeframe_str == '-month' or timeframe_str == "previous-month":
+    elif timeframe_str in ['-month', "previous-month"]:
         last_month = dt_now.month-1
         if last_month == 0:
             last_month = 12
@@ -86,7 +86,7 @@ def start_end_times(timeframe_str):
         dt_end = datetime.datetime(dt_now.year, dt_now.month, 16)
         time_start = float(dt_start.strftime('%s'))
         time_end = float(dt_end.strftime('%s'))
-    elif timeframe_str == 'today' or timeframe_str == "current-day":
+    elif timeframe_str in ['today', "current-day"]:
         dt_start = datetime.datetime(dt_now.year, dt_now.month, dt_now.day, 0, 0, 0)
         dt_end = dt_now
         time_start = float(dt_start.strftime('%s'))
@@ -96,7 +96,7 @@ def start_end_times(timeframe_str):
         dt_end = dt_now
         time_start = float(dt_start.strftime('%s'))
         time_end = float(dt_end.strftime('%s'))
-    elif timeframe_str == 'yesterday' or timeframe_str == "previous-day":
+    elif timeframe_str in ['yesterday', "previous-day"]:
         dt_start = datetime.date.today() - datetime.timedelta(days=1)
         dt_end = datetime.date.today()
         time_start = float(dt_start.strftime('%s'))

@@ -70,8 +70,7 @@ def upload_and_associate(fn):
 
     @retry(wait_exponential_multiplier=200, wait_exponential_max=10000, retry_on_exception=server_error)
     def upload():
-        media = cc.create_media(fn)
-        return media
+        return cc.create_media(fn)
 
     media = upload()
 

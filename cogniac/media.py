@@ -26,14 +26,13 @@ def file_creation_time(path_to_file):
     """
     if platform_system == 'Windows':
         return path.getctime(path_to_file)
-    else:
-        fstat = stat(path_to_file)
-        try:
-            return fstat.st_birthtime
-        except AttributeError:
-            # We're probably on Linux. No easy way to get creation dates here,
-            # so we'll settle for when its content was last modified.
-            return fstat.st_mtime
+    fstat = stat(path_to_file)
+    try:
+        return fstat.st_birthtime
+    except AttributeError:
+        # We're probably on Linux. No easy way to get creation dates here,
+        # so we'll settle for when its content was last modified.
+        return fstat.st_mtime
 
 ##
 #  CogniacMedia
@@ -245,8 +244,7 @@ class CogniacMedia(object):
                 files = {filename: fp}
             else:
                 files = {filename: open(filename, 'rb')}
-            resp = connection._post("/1/media", data=args, files=files)
-            return resp
+            return connection._post("/1/media", data=args, files=files)
 
         resp = upload()
         return CogniacMedia(connection, resp.json())
@@ -334,9 +332,7 @@ class CogniacMedia(object):
         """
         url = self.media_url
 
-        stream = False
-        if filep is not None:
-            stream = True  # user requests output to file so stream potentially large results
+        stream = filep is not None
         resp = self._cc._get(url, stream=stream, timeout=timeout)
         raise_errors(resp)
 
