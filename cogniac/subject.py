@@ -142,11 +142,8 @@ class CogniacSubject(object):
         limit (int):                         max number of results to return
         """
 
-        args = []
+        args = ['limit=%d' % limit, 'tenant_read_write=%s' % str(tenant_owned)]
 
-        # build the search args
-        args.append('limit=%d' % limit)
-        args.append('tenant_read_write=%s' % str(tenant_owned))
         if public_read:
             args.append("public_read=True")
 
@@ -321,8 +318,11 @@ class CogniacSubject(object):
             else:
                 files = {'file': open(filename, 'rb')}
                 # api.add_resource(SubjectReferenceMedia, '/1/subjects/<string:subject_uid>/referenceMedia')
-            resp = self._cc._post("/1/subjects/{}/referenceMedia".format(self.subject_uid), data=args, files=files)
-            return resp
+            return self._cc._post(
+                "/1/subjects/{}/referenceMedia".format(self.subject_uid),
+                data=args,
+                files=files,
+            )
 
         resp = upload()
         return CogniacMedia(self._cc, resp.json())
